@@ -10,14 +10,12 @@ function validateEmail(){
         result.style.color='green'
         emailInput.style.borderColor='green'
         emailInput.style.color='green'
-        emailInput.classList.remove('invalid')
 
     }else{
         result.textContent = 'Invalid'
         result.style.color='red'
         emailInput.style.borderColor='red'
         emailInput.style.color='red'
-        emailInput.classList.add('invalid')
     }
 }
 
