@@ -52,43 +52,30 @@ moveBlock()
 
 //STOPWATCH
 
-let timerId
+let interval
 let time=0
-const startButton = document.getElementById('start');
-const stopButton = document.getElementById('stop');
-const resetButton = document.getElementById('reset');
 
+const seconds=document.querySelector('#seconds')
+const startButton = document.querySelector('#start');
+const stopButton = document.querySelector('#stop');
+const resetButton = document.querySelector('#reset');
 const stopwatch=()=>{
     // time++
-    const minute=Math.floor(time/60)
-    const second=time%60
-    time++
-    const resultTime=`${padZero(minute)}:${padZero(second)}`
-    document.getElementById('secondsS').innerText=resultTime
+    clearInterval(interval)
+    interval=setInterval(()=>{
 
+        const minute=Math.floor(time/60)
+        const second=time%60
+        time++
+        seconds.innerHTML=`${padZero(minute)}:${padZero(second)}`
+    },1000)
 }
-const start=()=>{
-    timerId=setInterval(stopwatch,1000)
-    startButton.disabled = true;
-    stopButton.disabled = false;
-    resetButton.disabled = false;
+startButton.onclick=()=>stopwatch()
+stopButton.onclick=()=>clearInterval(interval)
+resetButton.onclick=()=>{
+    clearInterval(interval)
+    seconds.innerHTML='00:00'
 }
-const stop=()=>{
-    clearInterval(timerId)
-    startButton.disabled = false;
-    stopButton.disabled = true;
-    resetButton.disabled = false;
-}
-
-const reset=()=>{
-    stop()
-    time=0
-    stopwatch()
-    startButton.disabled = false;
-    stopButton.disabled = false;
-    resetButton.disabled = true;
-}
-
 const padZero=(number)=>{
     return number<10 ? `0${number}` : `${number}`
 }
