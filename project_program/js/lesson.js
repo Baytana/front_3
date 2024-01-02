@@ -19,7 +19,7 @@ const tabContentBlocks=document.querySelectorAll('.tab_content_block')
 const tabs=document.querySelectorAll('.tab_content_item')
 const tabsParent=document.querySelector('.tab_content_items')
 let currentTab=0
-const hideContent=()=>{
+const hideTabContent=()=>{
     tabContentBlocks.forEach(tabContentBlocks=>{
         tabContentBlocks.style.display='none'
     })
@@ -34,11 +34,11 @@ const showTabContent=(tabIndex=0)=>{
 }
 
 const autoSlider=(tabIndex)=>{
-    hideContent()
-    showTabContent(currentTab)
+    hideTabContent()
     currentTab=(currentTab+1)%tabs.length
+    showTabContent(currentTab)
 }
-hideContent()
+hideTabContent()
 showTabContent()
 setInterval(autoSlider,3000)
 
@@ -46,9 +46,9 @@ tabsParent.onclick=(event)=>{
     if (event.target.classList.contains('tab_content_item')){
         tabs.forEach((tab,tabIndex)=> {
             if (event.target===tab){
-                hideContent()
+                hideTabContent()
                 currentTab=tabIndex
-                autoSlider(currentTab)
+                showTabContent(currentTab)
             }
         })
     }
@@ -92,3 +92,43 @@ const converter=(element, targetElement1,targetElement2,current)=>{
 converter(som,usd,eur,'som')
 converter(usd,som,eur,'usd')
 converter(eur,som,usd,'eur')
+
+//CARD SWITCHER
+
+const card = document.querySelector('.card'),
+    btnNext=document.querySelector('#btn-next'),
+    btnPrev=document.querySelector('#btn-prev')
+
+let count= 0
+let totalObjects;
+
+fetch('https://jsonplaceholder.typicode.com/todos')
+    .then(response => response.json())
+    .then(data => {
+        totalObjects = data.length;
+        btnNext.addEventListener('click', () => fetchDataAndUpdateCard(1));
+        btnPrev.addEventListener('click', () => fetchDataAndUpdateCard(-1));
+        fetchDataAndUpdateCard(1)
+    })
+
+const fetchDataAndUpdateCard = async (offset ) => {
+    count = (count + offset + totalObjects) % totalObjects;
+    if (count === 0) count = totalObjects;
+
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${count}`);
+        const data = await response.json();
+        updateCard(data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
+
+const updateCard = (data) => {
+    card.innerHTML = `
+        <p>${data.title}</p>
+        <p style="color: ${data.completed ? 'green' : 'red'}">${data.completed}</p>
+        <span>${data.id}</span>
+    `;
+};
+

@@ -74,6 +74,7 @@ startButton.onclick=()=>stopwatch()
 stopButton.onclick=()=>clearInterval(interval)
 resetButton.onclick=()=>{
     clearInterval(interval)
+    time=0
     seconds.innerHTML='00:00'
 }
 const padZero=(number)=>{

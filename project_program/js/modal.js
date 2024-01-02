@@ -12,6 +12,7 @@ const openModal = () => {
 
 const closeModal = () => {
     modal.style.display = 'none';
+    document.body.style.overflow=''
 };
 
 modalTrigger.onclick = () => {
@@ -39,12 +40,5 @@ const checkModal = () => {
     }
 };
 
-// Присоединяем обработчик событий только если модальное окно еще не было показано
-if (!modalShown) {
-    window.addEventListener('scroll', checkModal);
-}
-
-// По желанию, можно удалить обработчик событий прокрутки после определенного времени
-setTimeout(() => {
-    window.removeEventListener('scroll', checkModal);
-}, 5000); // Укажите нужное время
+window.addEventListener('scroll', checkModal)
+setTimeout(()=>openModal(),2000)
